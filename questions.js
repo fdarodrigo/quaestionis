@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const questionsText = decodeURIComponent(urlParams.get('questions'));
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const container = document.getElementById('questions-container');
+    const messageContainer = document.getElementById('message-container');
     const questions = parseQuestions(questionsText);
 
     questions.forEach(question => {
@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function parseQuestions(text) {
-        const parts = text.match(/P\d+.*?R\d+ \w+/g);
+        const parts = text.match(/P\d+.*?R\d+ [^\s]+/g);
         return parts.map(part => {
             const title = part.match(/P\d+ (.*?) A\)/)[1];
             const options = part.match(/A\) (.*?) B\) (.*?) C\) (.*?) D\) (.*?)(?= R\d+)/);
-            const correct = part.match(/R\d+ (\w+)/)[1];
-
+            const correct = part.match(/R\d+ (.+)/)[1];
+    
             return {
                 title: title,
                 options: options.slice(1).map((text, index) => ({
@@ -48,14 +48,20 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         });
     }
+    
 
     function checkAnswer(option, optionEl) {
         if (option.isCorrect) {
             optionEl.style.backgroundColor = 'lightgreen';
-            alert('Correct answer!');
+            optionEl.classList.add('blink');
         } else {
             optionEl.style.backgroundColor = 'salmon';
+            optionEl.classList.add('vibrate');
         }
+
+        optionEl.addEventListener('animationend', () => {
+            optionEl.classList.remove('blink');
+            optionEl.classList.remove('vibrate');
+        });
     }
 });
-

@@ -59,10 +59,31 @@ body {
     margin-top: 10px;
 }
 
+@keyframes vibrate {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
 .option.correct {
     background-color: lightgreen; 
 }
 
 .option.incorrect {
     background-color: salmon; 
+}
+
+.option.vibrate {
+    animation: vibrate 0.5s linear;
+}
+
+.option.blink {
+    animation: blink 1s steps(5, start) 2;
 }

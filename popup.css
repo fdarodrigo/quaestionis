@@ -1,29 +1,55 @@
-body, html {
+body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-}
-
-.container {
     padding: 20px;
-    text-align: center;
-}
-
-h1 {
+    background-color: #f9f9f9;
     color: #333;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+#questions-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
 }
 
-button:hover {
-    background-color: #0056b3;
+.question {
+    margin-bottom: 20px;
+}
+
+.question-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.option {
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.option:hover {
+    background-color: #e2e2e2;
+}
+
+#message-container {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.message.correct {
+    background-color: lightgreen;
+    color: green;
+}
+
+.message.incorrect {
+    background-color: salmon;
+    color: red;
 }
