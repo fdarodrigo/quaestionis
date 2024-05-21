@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     const selectedText = message.text;
     console.log("Texto selecionado: ", selectedText);
 
-    generateQuestionsMock(selectedText).then(questions => {
+    generateQuestions(selectedText).then(questions => {
 
       console.log("questions: ", questions);
       chrome.runtime.sendMessage({ action: "showQuestions", questions: questions });
@@ -21,9 +21,25 @@ async function generateQuestions(text) {
   const url = `https://generativelanguage.googleapis.com/v1/models/${modelId}:generateContent?key=${apiKey}`;
   const params = {
     "contents": [
-      { "parts": [{ "text": "Write a story about a magic backpack with 10 words" }] }
+      {
+        "parts": [{
+          "text": `Generate five multiple choice questions and their correct answers based on the following text: "${text}"
+
+                  The output should only contain the questions and answers in the exact format shown below, with no additional text or explanations. 
+                  
+                  P1 First Question ? A) Option1 B) Option2 C) Option3 D) Option4 R1 Corretct Option
+                  P2 Second Question ? A) Option1 B) Option2 C) Option3 D) Option4 R2 Corretct Option
+                  P3 Third Question ? A) Option1 B) Option2 C) Option3 D) Option4 R3 Corretct Option
+                  P4 Fourth Question ? A) Option1 B) Option2 C) Option3 D) Option4 R4 Corretct Option
+                  P5 fifth Question ? A) Option1 B) Option2 C) Option3 D) Option4 R5 Corretct Option
+                  
+                  Each question should be followed by four options (A, B, C, D), and the correct answer should be indicated with the letter and the full text of the correct option. 
+                  For exemple: P1 What is the color of the sky? A) Blue B) Yellow C) Green D) Red R1 A) Blue`
+
+        }]
+      }
     ]
-  }
+  };
 
   const headers = {
     //   'Authorization': `Bearer ${apiKey}`,
@@ -43,7 +59,7 @@ async function generateQuestions(text) {
     if (response.ok) {
       const questions = data.candidates[0].content.parts[0].text;
       console.log(questions);
-      // openQuestionsPopup(questions);
+      openQuestionsPopup(questions);
       return questions;
     } else {
       console.error('Error generating questions:', data.error);
@@ -56,7 +72,12 @@ async function generateQuestions(text) {
 }
 
 async function generateQuestionsMock(text) {
-  const questions = " P1 Qual a cor do cavalo branco? A) Branco B) Cinza C) Azul D) Preto R1 Branco P2 Qual a cor do céu? A) Branco B) Cinza C) Azul D) Preto R2 Azul P3 Qual o animal que come com o rabo? A) Cachorro B) Gato C) Cavalo D) Peixe R3 Cavalo P4 Qual o oposto de quente? A) Frio B) Quente C) Morno D) Tépido R4 Frio P5 Qual o maior planeta do Sistema Solar? A) Terraço B) Marte C) Júpiter D) Saturno R5 Júpiter"
+  const questions = ` 
+                  Q1 Question ? A) Option1 B) Option2 C) Option3 D) Option4 AnswerQ1 Corretct Option
+                  Q2 Question ? A) Option1 B) Option2 C) Option3 D) Option4 AnswerQ2 Corretct Option
+                  Q3 Question ? A) Option1 B) Option2 C) Option3 D) Option4 AnswerQ3 Corretct Option
+                  Q4 Question ? A) Option1 B) Option2 C) Option3 D) Option4 AnswerQ4 Corretct Option
+                  Q5 Question ? A) Option1 B) Option2 C) Option3 D) Option4 AnswerQ5 Corretct Option`
   openQuestionsPopup(questions);
   return questions;
 }

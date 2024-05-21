@@ -32,22 +32,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function parseQuestions(text) {
-        const parts = text.match(/P\d+.*?R\d+ [^\s]+/g);
+        const parts = text.match(/P\d+.*?R\d+ [A-D]\) .*?(?=P\d|$)/gs);
         return parts.map(part => {
             const title = part.match(/P\d+ (.*?) A\)/)[1];
             const options = part.match(/A\) (.*?) B\) (.*?) C\) (.*?) D\) (.*?)(?= R\d+)/);
-            const correct = part.match(/R\d+ (.+)/)[1];
+            const correct = part.match(/R\d+ ([A-D]\) .*?)(?=\n|$)/)[1];
     
             return {
                 title: title,
                 options: options.slice(1).map((text, index) => ({
                     text: `${['A', 'B', 'C', 'D'][index]}) ${text}`,
-                    isCorrect: text.trim() === correct.trim()
+                    isCorrect: `${['A', 'B', 'C', 'D'][index]}) ${text}`.trim() === correct.trim()
                 })),
                 correctAnswer: correct
             };
         });
     }
+    
     
 
     function checkAnswer(option, optionEl) {

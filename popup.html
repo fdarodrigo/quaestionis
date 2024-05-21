@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,26 @@
 <body>
     <div class="container">
         <h1>Quaestionis</h1>
-        <p>Selecione um bloco de texto na página. O texto deve ter até 200 caracteres</p>
+        <div class="settings">
+            <div class="language-container">
+                <button class="language-button" id="language-button">
+                    <img src="icons/en.png" alt="English" id="language-icon">
+                    <h2 id="language-text">English</h2>
+                </button>
+                <span id="language-label">Change language</span>
+            </div>
+            <div class="toggle-container">
+                <label class="switch">
+                    <input type="checkbox" id="start-selection">
+                    <span class="slider"></span>
+                </label>
+                <h3 id="toggle-label">Start selection</h3>
+            </div>
+        </div>
+        <h3 id="instruction-text">Select a block of text on the page.</h3>
+        <div id="message-container" class="message-container">
+            <p class="message" id="message-text">You can start selecting the text.</p>
+        </div>
     </div>
     <script src="popup.js"></script>
 </body>
