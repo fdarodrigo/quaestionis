@@ -7,9 +7,13 @@
         "service_worker": "dist/bundle.js",
         "type": "module"
     },
-
     "action": {
         "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "dist/assets/quaestionis-logo.png",
+        "48": "dist/assets/quaestionis-logo.png",
+        "128": "dist/assets/quaestionis-logo.png"
     },
     "content_scripts": [
         {
@@ -17,12 +21,10 @@
             "js": ["content_script.js"]
         }
     ],
-
     "permissions": [
         "activeTab",
         "storage",
         "scripting",
         "tabs"
     ]
-    
 }
