@@ -1,22 +1,30 @@
-let selectionEnabled = false;
+let isSelecting = false;
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.action === 'startSelection') {
+        startSelection();
+    } else if (request.action === 'stopSelection') {
+        stopSelection();
+    }
+});
+
+function startSelection() {
+    if (!isSelecting) {
+        document.addEventListener('mouseup', textSelectionHandler);
+        isSelecting = true;
+    }
+}
+
+function stopSelection() {
+    if (isSelecting) {
+        document.removeEventListener('mouseup', textSelectionHandler);
+        isSelecting = false;
+    }
+}
 
 function textSelectionHandler() {
-    if (!selectionEnabled) return;
-
     let selectedText = window.getSelection().toString().trim();
     if (selectedText.length > 0) {
         chrome.runtime.sendMessage({ action: 'textSelected', text: selectedText });
     }
 }
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (message.action === 'startSelection') {
-        selectionEnabled = true;
-        document.addEventListener('mouseup', textSelectionHandler);
-        console.log('Text selection started');
-    } else if (message.action === 'stopSelection') {
-        selectionEnabled = false;
-        document.removeEventListener('mouseup', textSelectionHandler);
-        console.log('Text selection stopped');
-    }
-});
