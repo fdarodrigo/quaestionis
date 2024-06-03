@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); 
     color: #333;
 }
 
@@ -42,7 +42,8 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     color: #ffffff;
-    background-color: #007BFF;
+    background-color: #FFBD59; 
+    background: linear-gradient(135deg, #FFBD59 0%, #00BF63 100%);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -50,12 +51,13 @@ body {
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #00BF63; 
+    background: linear-gradient(135deg, #00BF63 0%, #001447 100%);
 }
 
 .message {
     font-size: 16px;
-    color: #d9534f; 
+    color: #d9534f;
     margin-top: 10px;
 }
 
@@ -73,11 +75,11 @@ body {
 }
 
 .option.correct {
-    background-color: lightgreen; 
+    background-color: lightgreen;
 }
 
 .option.incorrect {
-    background-color: salmon; 
+    background-color: salmon;
 }
 
 .option.vibrate {

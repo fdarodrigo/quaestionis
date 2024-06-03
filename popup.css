@@ -1,7 +1,7 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
     color: #333;
     display: flex;
@@ -11,44 +11,63 @@ body {
 }
 
 .container {
-    position: relative;
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: center;
-    max-width: 400px;
+    max-width: 600px;
     width: 100%;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.close-button:hover {
-    color: #f00;
+.logo img {
+    width: 50px;
+    height: auto;
+}
+
+.logo-text {
+    margin-left: 10px;
+    font-size: 34px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #a56402, #00BF63, #001447);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
 .language-container,
 .toggle-container {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
 }
 
 .language-button {
-    background: none;
-    border: none;
+    background-color: #f6d365;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    padding: 10px 15px;
+    border-radius: 50%;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.language-button:hover {
+    background-color: #fda085;
 }
 
 .language-button img {
@@ -63,41 +82,29 @@ body {
     cursor: pointer;
     outline: none;
     color: #fff;
-    background-color: #04AA6D;
-    background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+    background-color: #FFBD59;
+    background: linear-gradient(135deg, #FFBD59 0%, #00BF63 100%);
     border: none;
     border-radius: 15px;
     box-shadow: 0 9px #999;
-}
-
-.button-start {
-    background-color: #04AA6D;
-    background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+    margin-top: 15px;
 }
 
 .button-start:hover {
-    background-color: #3e8e41;
-    background: linear-gradient(135deg, #2a8d62 0%, #0f4c75 100%);
+    background-color: #00BF63;
+    background: linear-gradient(135deg, #00BF63 0%, #001447 100%);
 }
 
 .button-start:active {
-    background-color: #3e8e41;
+    background-color: #00BF63;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
 
 .button-stop {
-    background-color: #f44336;
-    background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+    background-color: #FFBD59;
 }
 
-.button-stop:hover {
-    background-color: #e53935;
-    background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%);
-}
-
-.button-stop:active {
-    background-color: #e53935;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
+#instruction-text {
+    text-align: center;
 }
