@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const buttonState = result.buttonState || 'start';
       const language = result.language || 'en';
 
-      setButtonState(buttonState, language);
-      setLanguage(language);
+      setLanguage(language, function() {
+          setButtonState(buttonState, language);
+      });
   });
 
   toggleButton.addEventListener('click', function () {
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
       toggleButton.dataset.lang = lang;
   }
 
-  function setLanguage(lang) {
+  function setLanguage(lang, callback) {
       chrome.storage.local.set({ language: lang }, function () {
           console.log('Language saved:', lang);
       });
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
       chrome.storage.local.get('buttonState', function(result) {
           const buttonState = result.buttonState || 'start';
           setButtonState(buttonState, lang);
+          if (callback) callback();
       });
   }
 });
