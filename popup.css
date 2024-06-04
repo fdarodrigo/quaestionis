@@ -102,7 +102,19 @@ body {
 }
 
 .button-stop {
-    background-color: #FFBD59;
+    background-color: #FF6347; 
+    background: linear-gradient(135deg, #FF6347 0%, #FF4500 100%);
+}
+
+.button-stop:hover {
+    background-color: #FF4500;
+    background: linear-gradient(135deg, #FF4500 0%, #B22222 100%);
+}
+
+.button-stop:active {
+    background-color: #FF4500;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }
 
 #instruction-text {

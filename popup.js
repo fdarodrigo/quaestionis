@@ -4,15 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const languageIcon = document.getElementById('language-icon');
   const languageText = document.getElementById('language-text');
   const instructionText = document.getElementById('instruction-text');
-  
+
   chrome.storage.local.get(['buttonState', 'language'], function (result) {
       console.log('Restored state:', result);
       const buttonState = result.buttonState || 'start';
       const language = result.language || 'en';
 
-      toggleButton.classList.add(buttonState === 'start' ? 'button-start' : 'button-stop');
-      toggleButton.textContent = buttonState === 'start' ? (language === 'pt' ? 'Iniciar' : 'Start') : (language === 'pt' ? 'Parar' : 'Stop');
-      toggleButton.dataset.lang = language;
+      setButtonState(buttonState, language);
       setLanguage(language);
   });
 
@@ -34,10 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function startSelection() {
       console.log('Selection started');
-      toggleButton.classList.remove('button-start');
-      toggleButton.classList.add('button-stop');
-      toggleButton.textContent = toggleButton.dataset.lang === 'pt' ? 'Parar' : 'Stop';
-
+      setButtonState('stop', toggleButton.dataset.lang);
       chrome.storage.local.set({ buttonState: 'stop' }, function () {
           console.log('State saved as stop');
       });
@@ -49,10 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function stopSelection() {
       console.log('Selection stopped');
-      toggleButton.classList.remove('button-stop');
-      toggleButton.classList.add('button-start');
-      toggleButton.textContent = toggleButton.dataset.lang === 'pt' ? 'Iniciar' : 'Start';
-
+      setButtonState('start', toggleButton.dataset.lang);
       chrome.storage.local.set({ buttonState: 'start' }, function () {
           console.log('State saved as start');
       });
@@ -62,25 +54,25 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  function setButtonState(state, lang) {
+      toggleButton.classList.remove('button-start', 'button-stop');
+      toggleButton.classList.add(state === 'start' ? 'button-start' : 'button-stop');
+      toggleButton.textContent = state === 'start' ? (lang === 'pt' ? 'Iniciar' : 'Start') : (lang === 'pt' ? 'Parar' : 'Stop');
+      toggleButton.dataset.lang = lang;
+  }
+
   function setLanguage(lang) {
       chrome.storage.local.set({ language: lang }, function () {
           console.log('Language saved:', lang);
       });
 
-      if (lang === 'pt') {
-          languageIcon.src = 'icons/pt.png';
-          languageText.innerText = 'Português';
-          instructionText.innerText = 'Selecione um bloco de texto na página.';
-      } else {
-          languageIcon.src = 'icons/en.png';
-          languageText.innerText = 'English';
-          instructionText.innerText = 'Select a block of text on the page.';
-      }
+      languageIcon.src = lang === 'pt' ? 'icons/pt.png' : 'icons/en.png';
+      languageText.innerText = lang === 'pt' ? 'Português' : 'English';
+      instructionText.innerText = lang === 'pt' ? 'Selecione um bloco de texto na página.' : 'Select a block of text on the page.';
 
-      toggleButton.dataset.lang = lang;
       chrome.storage.local.get('buttonState', function(result) {
           const buttonState = result.buttonState || 'start';
-          toggleButton.textContent = buttonState === 'start' ? (lang === 'pt' ? 'Iniciar' : 'Start') : (lang === 'pt' ? 'Parar' : 'Stop');
+          setButtonState(buttonState, lang);
       });
   }
 });

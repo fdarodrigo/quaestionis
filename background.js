@@ -16,7 +16,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 async function generateQuestions(text) {
   const apiKey = 'AIzaSyC7cTMms4nwPwIusJJa32mJbcFyMWz9gwc';
   const modelId = 'gemini-pro';
-  const prompt = `Generate five multiple choice questions based on the following text: "${text}"`;
 
   const url = `https://generativelanguage.googleapis.com/v1/models/${modelId}:generateContent?key=${apiKey}`;
   const params = {
