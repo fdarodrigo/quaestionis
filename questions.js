@@ -9,7 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const container = document.getElementById('questions-container');
     const messageContainer = document.getElementById('message-container');
+    const error = parseError(questionsText);
+    if (error) {
+        renderError(error);
+        return;
+    }
+
     const questions = parseQuestions(questionsText);
+    if (!questions.length) {
+        renderError("Could not read the generated questions. Check the extension service worker logs for the Gemini response.");
+        return;
+    }
 
     questions.forEach(question => {
         const questionEl = document.createElement('div');
@@ -31,12 +41,38 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(questionEl);
     });
 
+    function parseError(text) {
+        try {
+            const value = JSON.parse(text);
+            return value && value.error;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function renderError(message) {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'question';
+        errorEl.textContent = message;
+        container.appendChild(errorEl);
+    }
+
     function parseQuestions(text) {
         const parts = text.match(/P\d+.*?R\d+ [A-D]\) .*?(?=P\d|$)/gs);
+        if (!parts) {
+            return [];
+        }
+
         return parts.map(part => {
-            const title = part.match(/P\d+ (.*?) A\)/)[1];
+            const titleMatch = part.match(/P\d+ (.*?) A\)/);
             const options = part.match(/A\) (.*?) B\) (.*?) C\) (.*?) D\) (.*?)(?= R\d+)/);
-            const correct = part.match(/R\d+ ([A-D]\) .*?)(?=\n|$)/)[1];
+            const correctMatch = part.match(/R\d+ ([A-D]\) .*?)(?=\n|$)/);
+            if (!titleMatch || !options || !correctMatch) {
+                return null;
+            }
+
+            const title = titleMatch[1];
+            const correct = correctMatch[1];
     
             return {
                 title: title,
@@ -46,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })),
                 correctAnswer: correct
             };
-        });
+        }).filter(Boolean);
     }
     
     

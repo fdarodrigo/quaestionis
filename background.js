@@ -1,5 +1,3 @@
-import URLSearchParams from 'url';
-
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.action === "textSelected") {
         const selectedText = message.text;
@@ -10,6 +8,11 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                 console.log("questions: ", questions);
                 chrome.runtime.sendMessage({ action: "showQuestions", questions: questions });
                 closeLoadingPopupAndOpenQuestions(questions, loadingWindow.id);
+            }).catch(error => {
+                console.error("Error generating questions:", error);
+                closeLoadingPopupAndOpenQuestions({
+                    error: error.message || "Could not generate questions."
+                }, loadingWindow.id);
             });
         }).catch(error => {
             console.error("Error opening loading popup: ", error);
@@ -18,8 +21,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 });
 
 async function generateQuestions(text) {
-    const apiKey = 'AIzaSyC7cTMms4nwPwIusJJa32mJbcFyMWz9gwc';
-    const modelId = 'gemini-pro';
+    const apiKey = 'AIzaSyDtI1mL2fZbeVYRmlQJE33oIkjgpbM6huY';
+    const modelId = 'gemini-3.5-flash';
 
     const url = `https://generativelanguage.googleapis.com/v1/models/${modelId}:generateContent?key=${apiKey}`;
     const params = {
@@ -58,17 +61,20 @@ async function generateQuestions(text) {
         const data = await response.json();
 
         if (response.ok) {
-            const questions = data.candidates[0].content.parts[0].text;
+            const questions = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!questions) {
+                throw new Error("Gemini response did not include generated text.");
+            }
             console.log(questions);
             return questions;
         } else {
-            console.error('Error generating questions:', data.error);
+            const message = data?.error?.message || `Gemini API returned HTTP ${response.status}.`;
+            throw new Error(message);
         }
     } catch (error) {
         console.error('Error fetching questions:', error);
+        throw error;
     }
-
-    return [];
 }
 
 function openLoadingPopup() {
@@ -102,7 +108,9 @@ function openQuestionsPopup(questions) {
     const left = 200;
     const top = 200;
 
-    const encodedQuestions = encodeURIComponent(questions);
+    const encodedQuestions = encodeURIComponent(
+        typeof questions === 'string' ? questions : JSON.stringify(questions)
+    );
 
     chrome.windows.create({
         url: chrome.runtime.getURL('questions.html') + '?questions=' + encodedQuestions,

@@ -25,6 +25,10 @@
         "activeTab",
         "storage",
         "scripting",
-        "tabs"
+        "tabs",
+        "windows"
+    ],
+    "host_permissions": [
+        "https://generativelanguage.googleapis.com/*"
     ]
 }
