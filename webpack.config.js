@@ -1,5 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+if (!process.env.GEMINI_API_KEY) {
+    throw new Error('GEMINI_API_KEY is not configured. Copy .env.example to .env, set your key, and run npm run build again.');
+}
 
 module.exports = {
     mode: 'development',
@@ -21,7 +28,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env.API_KEY': "AIzaSyC7cTMms4nwPwIusJJa32mJbcFyMWz9gwc"
+            'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY || '')
         })
     ]
 };

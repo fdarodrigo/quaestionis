@@ -21,8 +21,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 });
 
 async function generateQuestions(text) {
-    const apiKey = 'AIzaSyDtI1mL2fZbeVYRmlQJE33oIkjgpbM6huY';
+    const apiKey = process.env.GEMINI_API_KEY;
     const modelId = 'gemini-3.5-flash';
+
+    if (!apiKey) {
+        throw new Error("GEMINI_API_KEY is not configured. Create a local .env file and rebuild the extension.");
+    }
 
     const url = `https://generativelanguage.googleapis.com/v1/models/${modelId}:generateContent?key=${apiKey}`;
     const params = {
